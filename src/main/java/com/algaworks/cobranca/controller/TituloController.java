@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.algaworks.cobranca.model.StatusTitulo;
 import com.algaworks.cobranca.model.Titulo;
 import com.algaworks.cobranca.repository.Titulos;
 
@@ -17,16 +19,18 @@ public class TituloController {
 	private Titulos titulos;
 
 	@GetMapping("/novo")
-	public String novo() {
-		return "CadastroTitulo";
+	public ModelAndView novo() {
+		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		mv.addObject("todosStatusTitulo", StatusTitulo.values());
+		return mv;
 	}
 	
 	@PostMapping
-	public String salvar(Titulo titulo) {
-		
-		System.out.println(">>>>" + titulo.getDescricao());
-		
+	public ModelAndView salvar(Titulo titulo) {
 		titulos.save(titulo);
-		return "CadastroTitulo";
+		
+		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		mv.addObject("mensagem", "Título salvo com sucesso!");
+		return mv;
 	}
 }
